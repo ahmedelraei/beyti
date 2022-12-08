@@ -1,0 +1,7 @@
+package com.beyti.app;
+
+public class Main {
+    public static void main(String[] args){
+        LoginFrame loginFrame = new LoginFrame();
+    }
+}
