@@ -1,96 +1,81 @@
 package com.beyti.utils;
 
-import java.io.*;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
+//import org.apache.ibatis.jdbc.ScriptRunner;
+
+//import java.io.*;
+import com.beyti.models.Employee;
+import com.beyti.models.BaseModel;
+import com.beyti.models.SalesOffice;
+
+import java.sql.*;
 
 public class DB {
-    public static void connect() {
+    public static Connection connect() {
         Connection conn;
-        Statement stmt;
-        try{
-            DriverManager.getConnection("jdbc:sqlserver://DESKTOP-RNQD9CI;Database=beytiDB;" +
+//        Statement stmt;
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-RNQD9CI;Database=beytiDB;" +
                     "IntegratedSecurity=true;encrypt=true;trustServerCertificate=true;");
-
-        } catch (SQLException e){
-            if(e.getErrorCode() == 4060){
-                try {
-                    conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-RNQD9CI;" +
-                            "IntegratedSecurity=true;encrypt=true;trustServerCertificate=true;");
-                    stmt = conn.createStatement();
-                    stmt.execute("CREATE DATABASE beytiDB");
-                    migrate(conn);
-                    conn.commit();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            } else
-                e.printStackTrace();
-        }
-        System.out.println("Connection Established!");
-    }
-    public static void executeSqlScript(Connection conn, File inputFile) throws SQLException {
-
-        // Delimiter
-        String delimiter = ";";
-
-        // Create scanner
-        Scanner scanner;
-        try {
-            scanner = new Scanner(inputFile).useDelimiter(delimiter);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-            return;
-        }
-
-        // Loop through the SQL file statements
-        Statement currentStatement = null;
-        while(scanner.hasNext()) {
-
-            // Get statement
-            String rawStatement = scanner.next();
-            System.out.println(rawStatement);
-            try {
-                // Execute statement
-                currentStatement = conn.createStatement();
-                currentStatement.execute(rawStatement);
-                conn.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                // Release resources
-                if (currentStatement != null) {
-                    try {
-                        currentStatement.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                currentStatement = null;
+            System.out.println("Connection Established!");
+            BaseModel.setConnection(conn);
+            int salesOfficeId = 1;
+            int managerId = 1;
+            if(SalesOffice.get().size() == 0){
+                SalesOffice salesOffice = SalesOffice.create("Cairo");
+                assert salesOffice != null;
+                salesOfficeId = salesOffice.number;
             }
-        }
-        scanner.close();
-    }
-    private static void migrate(Connection conn){
-        try {
-
-            File sqlScript = new File("sql/structure.sql").getAbsoluteFile();
-            if(sqlScript.exists()){
-//                executeSqlScript(conn, sqlScript);
-//                conn.commit();
-                SQLScriptRunner runner = new SQLScriptRunner(conn, true, true);
-                try {
-                    runner.runScript(new BufferedReader(new FileReader("sql/structure.sql")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if(Employee.get().size() == 0) {
+                Employee admin = Employee.create(salesOfficeId, "Ahmed", "Hatem", "admin", "admin");
+                assert admin != null;
+                managerId = admin.id;
             }
-            else throw new FileNotFoundException("Database structure SQL script not found");
-        } catch (SQLException | FileNotFoundException e) {
+            SalesOffice.update(salesOfficeId, managerId);
+
+
+        } catch (SQLException e) {
+
+//            if (e.getErrorCode() == 4060) {
+//                try {
+//                    conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-RNQD9CI;" +
+//                            "IntegratedSecurity=true;encrypt=true;trustServerCertificate=true;");
+//                    stmt = conn.createStatement();
+//                    stmt.execute("CREATE DATABASE beytiDB");
+//                    migrate(conn);
+//                    System.out.println("Migrated & Connection Established!");
+//
+//                } catch (SQLException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            } else {
+//            }
+            e.printStackTrace();
             throw new RuntimeException(e);
+
         }
+        return conn;
     }
+
+//    private static void migrate(Connection conn) {
+//        try {
+//
+//            File sqlScript = new File("sql/structure.sql").getAbsoluteFile();
+//            if (sqlScript.exists()) {
+////                SQLScriptRunner runner = new SQLScriptRunner(conn, true, true);
+//                ScriptRunner sr = new ScriptRunner(conn);
+//                try {
+////                    runner.runScript(new BufferedReader(new FileReader("sql/structure.sql")));
+//                    Reader reader = new BufferedReader(new FileReader("sql/structure.sql"));
+//                    sr.runScript(reader);
+//
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            } else throw new FileNotFoundException("Database structure SQL script not found");
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
+
+
