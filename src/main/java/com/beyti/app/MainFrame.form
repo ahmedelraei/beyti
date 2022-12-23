@@ -69,7 +69,12 @@
                         <children>
                           <component id="b2af3" class="javax.swing.JTable" binding="propertiesTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <fillsViewportHeight value="true"/>
+                              <font size="18"/>
+                              <intercellSpacing width="10" height="-1"/>
+                              <showVerticalLines value="false"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -232,7 +237,11 @@
                         <children>
                           <component id="1ef33" class="javax.swing.JTable" binding="ownershipsTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <fillsViewportHeight value="true"/>
+                              <font size="18"/>
+                              <intercellSpacing width="10" height="-1"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -271,7 +280,11 @@
                         <children>
                           <component id="f8708" class="javax.swing.JTable" binding="ownersTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <fillsViewportHeight value="true"/>
+                              <font size="18"/>
+                              <intercellSpacing width="10" height="-1"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -476,7 +489,11 @@
                         <children>
                           <component id="d8b45" class="javax.swing.JTable" binding="salesOfficeTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <fillsViewportHeight value="true"/>
+                              <font size="18"/>
+                              <intercellSpacing width="10" height="-1"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -580,7 +597,11 @@
                         <children>
                           <component id="deb6e" class="javax.swing.JTable" binding="empTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <fillsViewportHeight value="true"/>
+                              <font size="18"/>
+                              <intercellSpacing width="10" height="-1"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
