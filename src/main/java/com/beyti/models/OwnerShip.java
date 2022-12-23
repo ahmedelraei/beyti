@@ -3,11 +3,12 @@ package com.beyti.models;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 
 public class OwnerShip extends BaseModel{
-    private final int ownerId;
-    private final int propertyId;
+    public final int ownerId;
+    public final int propertyId;
     public float percent;
 
     private OwnerShip(int ownerId, int propertyId, float percent) {
@@ -51,12 +52,11 @@ public class OwnerShip extends BaseModel{
             throw new RuntimeException(e);
         }
     }
-    public static LinkedList<OwnerShip> get(int propertyId) {
+    public static LinkedList<OwnerShip> get() {
         try {
             LinkedList<OwnerShip> ownerShips = new LinkedList<>();
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM PropertyOwner WHERE propertyId = ?");
-            pstmt.setInt(1, propertyId);
-            ResultSet rs = pstmt.executeQuery();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM PropertyOwner");
             while (rs.next()) {
                 ownerShips.add(new OwnerShip(rs.getInt("ownerId"), rs.getInt("propertyId"), rs.getFloat("percent")));
             }
@@ -67,7 +67,7 @@ public class OwnerShip extends BaseModel{
         }
     }
 
-    public String[] getColumn() {
+    public static String[] getColumns() {
         return new String[] {"ownerId", "propertyId", "percent"};
     }
 

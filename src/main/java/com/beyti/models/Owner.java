@@ -7,8 +7,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 
 public class Owner extends BaseModel {
-    // TODO: Make all models constructors private
-    private final int id;
+    public final int id;
     public String firstName;
     public String lastName;
 

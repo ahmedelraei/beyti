@@ -7,7 +7,7 @@ public class SalesOffice extends BaseModel{
     public int number;
     public String location;
     public int managerId;
-    public SalesOffice(int number, String location, int managerId) {
+    private SalesOffice(int number, String location, int managerId) {
         this.number = number;
         this.location = location;
         this.managerId = managerId;

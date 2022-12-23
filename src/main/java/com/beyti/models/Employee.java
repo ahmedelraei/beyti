@@ -18,12 +18,7 @@ public class Employee extends BaseModel {
         return rs.next();
     }
 
-    public void setManager(int managerId) throws SQLException {
-
-
-    }
-
-    public Employee(Connection conn, int id, int officeNumber, String firstName, String lastName, String username, String password) {
+    private Employee(Connection conn, int id, int officeNumber, String firstName, String lastName, String username, String password) {
         this.id = id;
         this.officeNumber = officeNumber;
         this.firstName = firstName;
